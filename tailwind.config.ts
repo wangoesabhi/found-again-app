@@ -52,6 +52,34 @@ export default {
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
+				success: {
+					DEFAULT: 'hsl(var(--success))',
+					foreground: 'hsl(var(--success-foreground))'
+				},
+				warning: {
+					DEFAULT: 'hsl(var(--warning))',
+					foreground: 'hsl(var(--warning-foreground))'
+				},
+				info: {
+					DEFAULT: 'hsl(var(--info))',
+					foreground: 'hsl(var(--info-foreground))'
+				},
+				missing: {
+					DEFAULT: 'hsl(var(--missing))',
+					foreground: 'hsl(var(--missing-foreground))'
+				},
+				found: {
+					DEFAULT: 'hsl(var(--found))',
+					foreground: 'hsl(var(--found-foreground))'
+				},
+				contacted: {
+					DEFAULT: 'hsl(var(--contacted))',
+					foreground: 'hsl(var(--contacted-foreground))'
+				},
+				pending: {
+					DEFAULT: 'hsl(var(--pending))',
+					foreground: 'hsl(var(--pending-foreground))'
+				},
 				sidebar: {
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
