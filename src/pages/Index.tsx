@@ -6,9 +6,6 @@ import { Badge } from "@/components/ui/badge";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { RecentActivity } from "@/components/dashboard/RecentActivity";
 import { PersonCard } from "@/components/dashboard/PersonCard";
-import { personRecords } from "@/data/dummyDatabases";
-import { performCompletePersonLookup, sendFamilyNotifications } from "@/utils/dataLookup";
-import { useToast } from "@/hooks/use-toast";
 import { 
   Users, 
   UserCheck, 
@@ -22,75 +19,65 @@ import {
   Shield
 } from "lucide-react";
 
+// Mock data for demonstration
+const mockPersons = [
+  {
+    id: "1",
+    name: "John Doe",
+    age: 45,
+    status: "missing" as const,
+    location: "Kiosk #12, Central Station",
+    timestamp: "2 hours ago",
+    hasAadhaar: true,
+    hasFamilyDetails: true,
+  },
+  {
+    id: "2",
+    name: "Sarah Wilson",
+    age: 32,
+    status: "contacted" as const,
+    location: "Kiosk #08, Mall Plaza",
+    timestamp: "4 hours ago",
+    hasAadhaar: true,
+    hasFamilyDetails: true,
+  },
+  {
+    id: "3",
+    name: "Unknown Person #1",
+    status: "pending" as const,
+    location: "Kiosk #15, Airport Terminal",
+    timestamp: "6 hours ago",
+    hasAadhaar: false,
+    hasFamilyDetails: false,
+  },
+  {
+    id: "4",
+    name: "Michael Brown",
+    age: 28,
+    status: "found" as const,
+    location: "Kiosk #03, Bus Station",
+    timestamp: "8 hours ago",
+    hasAadhaar: true,
+    hasFamilyDetails: true,
+  },
+];
+
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
-  const { toast } = useToast();
 
-  const filteredPersons = personRecords.filter(person => {
+  const filteredPersons = mockPersons.filter(person => {
     const matchesSearch = person.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesStatus = statusFilter === "all" || person.status === statusFilter;
     return matchesSearch && matchesStatus;
   });
 
   const handleViewDetails = (id: string) => {
-    const person = personRecords.find(p => p.id === id);
-    if (!person) return;
-
-    console.log("🔍 Viewing details for:", person.name);
-    
-    if (person.fingerprintData) {
-      const lookupResult = performCompletePersonLookup(person.fingerprintData);
-      
-      if (lookupResult.success && lookupResult.data) {
-        toast({
-          title: "Person Identified Successfully",
-          description: `Found ${person.name} - Family: ${lookupResult.data.samagraFamily.headOfFamily}, ${lookupResult.data.totalContacts} contact numbers available`,
-        });
-        
-        console.log("Complete lookup result:", lookupResult.data);
-      } else {
-        toast({
-          title: "Limited Information",
-          description: lookupResult.message,
-          variant: "destructive"
-        });
-      }
-    }
+    console.log("View details for person:", id);
   };
 
   const handleContact = (id: string) => {
-    const person = personRecords.find(p => p.id === id);
-    if (!person || !person.fingerprintData) return;
-
-    console.log("📞 Contacting family for:", person.name);
-    
-    const lookupResult = performCompletePersonLookup(person.fingerprintData);
-    
-    if (lookupResult.success && lookupResult.data) {
-      const notifications = sendFamilyNotifications(
-        lookupResult.data.contactNumbers,
-        {
-          name: person.name,
-          location: person.location,
-          timestamp: person.timestamp
-        }
-      );
-      
-      toast({
-        title: "Family Notifications Sent",
-        description: `Sent ${notifications.length} notifications to family members`,
-      });
-      
-      // In real implementation, update person status to "contacted"
-      console.log("📱 Notifications sent:", notifications);
-    } else {
-      toast({
-        title: "Cannot Contact Family",
-        description: "No family contact information found",
-        variant: "destructive"
-      });
-    }
+    console.log("Contact family for person:", id);
   };
 
   return (
