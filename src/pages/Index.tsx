@@ -6,6 +6,8 @@ import { Badge } from "@/components/ui/badge";
 import { StatsCard } from "@/components/dashboard/StatsCard";
 import { RecentActivity } from "@/components/dashboard/RecentActivity";
 import { PersonCard } from "@/components/dashboard/PersonCard";
+import { BiometricInput } from "@/components/BiometricInput";
+import { PersonDetails } from "@/components/PersonDetails";
 import { 
   Users, 
   UserCheck, 
@@ -65,6 +67,7 @@ const mockPersons = [
 const Index = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState<string>("all");
+  const [foundPersonData, setFoundPersonData] = useState<any>(null);
 
   const filteredPersons = mockPersons.filter(person => {
     const matchesSearch = person.name.toLowerCase().includes(searchTerm.toLowerCase());
@@ -78,6 +81,10 @@ const Index = () => {
 
   const handleContact = (id: string) => {
     console.log("Contact family for person:", id);
+  };
+
+  const handlePersonFound = (personData: any) => {
+    setFoundPersonData(personData);
   };
 
   return (
@@ -144,6 +151,16 @@ const Index = () => {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           {/* Main Content */}
           <div className="lg:col-span-2 space-y-6">
+            {/* Biometric Input */}
+            <BiometricInput onPersonFound={handlePersonFound} />
+
+            {/* Person Details - Show when person is found */}
+            {foundPersonData && (
+              <PersonDetails 
+                personData={foundPersonData} 
+                onClose={() => setFoundPersonData(null)}
+              />
+            )}
             {/* Search and Filters */}
             <Card>
               <CardHeader>
